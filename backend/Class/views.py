@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from django.contrib.auth import get_user_model
 from .models import Class, Chat, Test, WorkSheet, Grade
 from .serializers import ClassSerializer, ChatSerializer, TestSerializer, WorkSheetSerializer, GradeSerializer
-from .filters import ClassFilterStudentSet, ClassFilterTeacherSet, ChatFilterSet, TestFilterSet, WorkSheetFilterSet, GradeFilterSet
+from .filters import ClassFilterStudentSet, ClassFilterTeacherSet, ChatFilterSet, TestFilterSet, WorkSheetFilterSet, WorkSheetStudentFilterSet, GradeFilterSet
 
 User = get_user_model()
 
@@ -187,6 +187,16 @@ class WorkSheetView(generics.ListCreateAPIView):
     parser_classes      =   [MultiPartParser]
     queryset            =   WorkSheet.objects.all()
     serializer_class    =   WorkSheetSerializer
+
+
+class WorkSheetStudentFilter(generics.ListAPIView):
+    parser_classes      =   [MultiPartParser]
+
+    queryset            =   WorkSheet.objects.all()
+    serializer_class    =   WorkSheetSerializer
+
+    filter_backends     =   [DjangoFilterBackend]
+    filterset_class     =   WorkSheetStudentFilterSet
 
 
 class WorkSheetFilter(APIView):

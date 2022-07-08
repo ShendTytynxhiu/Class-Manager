@@ -15,6 +15,7 @@ urlpatterns = [
     path("student-test-filter", views.StudentTestFilter.as_view()),
     path("teacher-test-filter", views.TeacherTestFilter.as_view()),
     path("worksheet-filter", views.WorkSheetFilter.as_view()),
+    path("worksheet-student-filter", views.WorkSheetStudentFilter.as_view()),
     path("grade-filter", views.GradeFilter.as_view()),
 
     path("chat-detail/<int:pk>/", views.ChatDetail.as_view()),

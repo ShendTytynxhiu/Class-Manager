@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
@@ -7,9 +8,31 @@ import Paper from "@mui/material/Paper";
 import PropTypes from "prop-types";
 
 import Typography from "@mui/material/Typography";
+import Button from "@mui/material/Button";
+
+import Popover from "@mui/material/Popover";
+import Divider from "@mui/material/Divider";
+import { TextField } from "@mui/material";
+import { AdapterDateFns } from "@mui/x-date-pickers/AdapterDateFns";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DatePicker } from "@mui/x-date-pickers/DatePicker";
 
 function ClassBanner(props) {
   const { banner } = props;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
+  const id = open ? "simple-popover" : undefined;
+
+  const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
 
   return (
     <Paper
@@ -25,8 +48,6 @@ function ClassBanner(props) {
         marginTop: "6rem",
       }}
     >
-      {/* Increase the priority of the hero background image */}
-      {<img style={{ display: "none" }} src={banner.image} />}
       <Box
         sx={{
           position: "absolute",
@@ -37,6 +58,7 @@ function ClassBanner(props) {
           backgroundColor: "rgba(0,0,0,.3)",
         }}
       />
+
       <Grid container>
         <Grid item md={6}>
           <Box
@@ -46,6 +68,52 @@ function ClassBanner(props) {
               pr: { md: 0 },
             }}
           >
+            {props.is_teacher ? (
+              <Grid>
+                <Button
+                  variant="contained"
+                  style={{ position: "absolute", bottom: "10%", right: "-90%" }}
+                  aria-describedby={id}
+                  onClick={handleClick}
+                >
+                  Create Test
+                </Button>
+                <Popover
+                  id={id}
+                  open={open}
+                  anchorEl={anchorEl}
+                  onClose={handleClose}
+                  anchorOrigin={{
+                    vertical: "bottom",
+                    horizontal: "center",
+                  }}
+                  transformOrigin={{
+                    vertical: "top",
+                    horizontal: "center",
+                  }}
+                >
+                  <Box sx={{ mt: 1 }} p={6}>
+                    <TextField
+                      value={title}
+                      onChange={(newValue) => {
+                        setTitle(newValue);
+                      }}
+                    />
+                    <LocalizationProvider dateAdapter={AdapterDateFns}>
+                      <DatePicker
+                        label="Basic example"
+                        value={date}
+                        onChange={(newValue) => {
+                          setDate(newValue);
+                        }}
+                        renderInput={(params) => <TextField {...params} />}
+                      />
+                    </LocalizationProvider>
+                  </Box>
+                </Popover>
+              </Grid>
+            ) : null}
+
             <Typography
               component="h1"
               variant="h3"
@@ -73,4 +141,10 @@ ClassBanner.propTypes = {
   }).isRequired,
 };
 
-export default ClassBanner;
+const mapStateToProps = (state) => {
+  return {
+    is_teacher: state.auth.is_teacher,
+  };
+};
+
+export default connect(mapStateToProps)(ClassBanner);

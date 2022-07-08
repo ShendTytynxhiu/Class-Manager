@@ -38,6 +38,12 @@ class WorkSheetFilterSet(FilterSet):
 # http://127.0.0.1:8000/worksheet-filter?test=2
 
 
+class WorkSheetStudentFilterSet(FilterSet):
+    class Meta:
+        model   =   WorkSheet
+        fields  =   ["student"]
+
+
 class GradeFilterSet(FilterSet):
     class Meta:
         model   =   Grade

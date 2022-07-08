@@ -114,7 +114,7 @@ function Test(props) {
     data.append("student", props.user_id);
 
     axios.post("http://127.0.0.1:8000/worksheet/", data).then((res) => {
-      <Alert severity="success">Good Job!</Alert>;
+      return <Alert severity="success">Good Job!</Alert>;
     });
 
     e.preventDefault();

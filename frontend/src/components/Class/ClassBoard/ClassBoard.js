@@ -85,6 +85,7 @@ function ClassBoard(props) {
           <Container maxwidth="lg">
             <main>
               <ClassBanner banner={bannerDetails} />
+
               <Grid container spacing={2}>
                 <Grid item xs={3}>
                   <TestBoard id={id} />

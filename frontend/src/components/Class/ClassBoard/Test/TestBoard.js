@@ -19,6 +19,7 @@ import Test from "./Test";
 
 function TestBoard(props) {
   const [tests, setTests] = useState([]);
+  const [worksheet, setWorksheet] = useState(null);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   const handleClick = (event) => {
@@ -39,6 +40,13 @@ function TestBoard(props) {
         .get("http://127.0.0.1:8000/student-test-filter?_class=" + props.id)
         .then((res) => setTests(res.data));
     }
+
+    axios
+      .get(
+        "http://127.0.0.1:8000/worksheet-student-filter?student=" +
+          props.user_id
+      )
+      .then((res) => setWorksheet(res.data[0]));
   }, []);
 
   const open = Boolean(anchorEl);
@@ -74,31 +82,39 @@ function TestBoard(props) {
               <Grid container alignItems="center">
                 {tests.map((value, index) => (
                   <Grid key={index} xs={12} item container alignItems="center">
-                    <Box sx={{ mt: 1 }}>
-                      <Button
-                        aria-describedby={id}
-                        variant="contained"
-                        onClick={handleClick}
-                      >
-                        {value.title}
-                      </Button>
-                    </Box>
-                    <Popover
-                      id={id}
-                      open={open}
-                      anchorEl={anchorEl}
-                      onClose={handleClose}
-                      anchorOrigin={{
-                        vertical: "bottom",
-                        horizontal: "center",
-                      }}
-                      transformOrigin={{
-                        vertical: "top",
-                        horizontal: "center",
-                      }}
-                    >
-                      <Test id={value.id} guide_lines={value.guide_lines} />
-                    </Popover>
+                    {value.id === worksheet.id ? (
+                      <Typography variant="h6">
+                        {value.title} Finished!
+                      </Typography>
+                    ) : (
+                      <div>
+                        <Box sx={{ mt: 1 }}>
+                          <Button
+                            aria-describedby={id}
+                            variant="contained"
+                            onClick={handleClick}
+                          >
+                            {value.title}
+                          </Button>
+                        </Box>
+                        <Popover
+                          id={id}
+                          open={open}
+                          anchorEl={anchorEl}
+                          onClose={handleClose}
+                          anchorOrigin={{
+                            vertical: "bottom",
+                            horizontal: "center",
+                          }}
+                          transformOrigin={{
+                            vertical: "top",
+                            horizontal: "center",
+                          }}
+                        >
+                          <Test id={value.id} guide_lines={value.guide_lines} />
+                        </Popover>
+                      </div>
+                    )}
                   </Grid>
                 ))}
               </Grid>

@@ -2,7 +2,7 @@
 
 frontend/node_modules/
 frontend/public/
-frontend/package-lock.json/
+frontend/package-lock.json
 frontend/yarn.lock
 
 backend/media/
